@@ -1,22 +1,14 @@
-import { useState } from "react";
+import { useRef } from "react";
 import { IoMdAdd } from "react-icons/io";
 
 function AddToDo({ onNewItem }) {
-  const [todoName, setTodoName] = useState("");
-  const [dueDate, setDueDate] = useState("");
-
-  const handleNameChange = (event) => {
-    setTodoName(event.target.value);
-  };
-
-  const handleDateChange = (event) => {
-    setDueDate(event.target.value);
-  };
+  const todoName = useRef();
+  const dueDate = useRef();
 
   const handleAddButtonClicked = () => {
-    onNewItem(todoName, dueDate);
-    setTodoName("");
-    setDueDate("");
+    onNewItem(todoName.current.value, dueDate.current.value);
+    todoName.current.value = "";
+    dueDate.current.value = "";
   };
 
   return (
@@ -24,17 +16,14 @@ function AddToDo({ onNewItem }) {
       <div className="row">
         <div className="col-6 border">
           {/* Input section */}
-          <input
-            type="text"
-            value={todoName}
-            placeholder="Enter your task"
-            onChange={handleNameChange}
-          />
+          <input type="text" ref={todoName} placeholder="Enter your task" />
         </div>
+
         <div className="col-4 border">
           {/* Input date */}
-          <input type="date" value={dueDate} onChange={handleDateChange} />
+          <input type="date" ref={dueDate} />
         </div>
+
         <div className="col-2 border">
           {/* Input button */}
           <button
